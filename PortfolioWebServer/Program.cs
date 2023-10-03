@@ -10,7 +10,7 @@ Dictionary<string, string> pages = new Dictionary<string, string>()
 };
 
 HttpListener server = new HttpListener();
-server.Prefixes.Add("http://127.0.0.1:8888/");
+server.Prefixes.Add("http://127.0.0.1:1337/");
 server.Start();
 
 Task.Run(ExecuteAsync);
@@ -25,8 +25,10 @@ async Task ExecuteAsync()
 {
     while (isExecuting)
     {
+        Console.WriteLine("Listening for next request");
         var context = await server.GetContextAsync();
         var request = context.Request;
+        Console.WriteLine($"Request from {request.Url}");
 
         var buffer = Encoding.UTF8.GetBytes(ResolvePageContent(request.RawUrl));
 
