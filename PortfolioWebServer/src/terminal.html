@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Horrest's presonal blog</title>
+</head>
+
+<body>
+    <main>
+        <div id="terminal">
+
+        </div>
+        <div class="helper">
+            Type help for the commands!
+        </div>
+        <div class="inputField">
+            <span class="username">welcome@user:</span>
+            <span class="tilda">~</span>
+            <span class="smth">$</span>
+            <input type="text" id="input" onblur="this.focus()" autofocus />
+        </div>
+    </main>
+</body>
+<style>
+    body {
+        background-color: #000;
+        color: #4e9a06;
+    }
+
+    .username {
+        color: red;
+    }
+
+    .inputField span.tilda {
+        color: lightblue;
+    }
+
+    .helper {
+        padding-top: 25px;
+    }
+
+    .inputField {
+        color: #fff;
+        padding-top: 25px;
+    }
+
+    input[type="text"] {
+        color: #fff;
+        background-color: transparent;
+        border: none;
+        width: calc(100% - 150px);
+    }
+
+    input[type="text"]:focus {
+        outline-width: 0;
+    }
+
+    #terminal {
+        width: calc(100% - 50px);
+        height: 400px;
+        overflow-y: scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    #terminal::-webkit-scrollbar {
+        display: none;
+    }
+</style>
+<script>
+    const links = [
+        {
+            url: 'https://github.com/polovgrime',
+            title: 'Github'
+        },
+        {
+            url: 'https://www.linkedin.com/in/anton-polovnikov-084956219/',
+            title: 'LinkedIn'
+        }
+    ];
+    const commands = {
+        'about': 'Hello! This is my personal blog. I\'m Anton, 26 years old. Backend .NET developer. Gonna fill the info about me here later',
+        'links': links.map(i => `<a href="${i.url}">${i.title}</a>`).join('</br>'),
+    };
+
+    commands['help'] = Object.keys(commands).join(', ')
+
+    const input = document.getElementById('input');
+    const terminal = document.getElementById('terminal');
+    const usedCommands = [];
+    let currentCmdIndex = 0;
+
+    input.focus();
+
+    input.addEventListener('keyup', function (event) {
+        if (event.key === 'Enter') {
+            resolveCommand(input.value);
+        }
+
+        if (event.key === 'ArrowUp'){
+            prevCommand();
+        }
+
+        if (event.key === 'ArrowDown'){
+            nextCommand();
+        }
+    });
+
+    function resolveCommand(command) {
+        clearInput();
+        addCommand(command);
+
+        if (command == "clear"){
+            clear();
+            return;
+        }
+
+        if (commands.hasOwnProperty(command) == false) {
+            commandNotFound(command);
+        } else {
+            draw(commands[command]);
+        }   
+    }
+
+    function commandNotFound(name) {
+        draw('Command ' + name + ' was not found');
+    }
+
+    function draw(text) {
+        let newElement = document.createElement('div');
+        newElement.innerHTML = text;
+        terminal.appendChild(newElement);
+        terminal.scrollTop = terminal.scrollHeight;
+    }
+
+    function clear(){
+        terminal.innerHTML = "";
+    }
+
+    function clearInput(){
+        input.value = "";
+    }
+
+    function addCommand(command){
+        if (command == usedCommands[usedCommands.length - 1]) {
+            return;
+        }
+        usedCommands.push(command);
+        currentCmdIndex = usedCommands.length;
+    }
+
+    function prevCommand(){
+        currentCmdIndex--;
+        if (currentCmdIndex <= 0) {
+            currentCmdIndex = 0;
+        }
+
+        typeCommand();
+    }
+
+    function nextCommand(){
+        currentCmdIndex++;
+        if (currentCmdIndex >= usedCommands.length) {
+            currentCmdIndex = usedCommands.length - 1;
+        }
+
+        typeCommand();
+    }
+
+    function typeCommand(){
+        if (usedCommands.length == 0) {
+            return;
+        }
+
+        input.value = usedCommands[currentCmdIndex];
+    }
+</script>
+
+</html>

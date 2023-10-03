@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Horrest's presonal blog</title>
+</head>
+
+<body>
+    <header>
+        <h1>
+            Horrest's personal blog
+        </h1>
+        <button id="stopAnimation" onclick="skipAnimation()">Stop animation</button>
+    </header>
+    <main>
+        <div class='about'>
+            <h1>Why does this website look like this?</h1>
+            <p>
+                I'm familiar with node.js and most of modern fronend framework, however...
+                <b>I never liked them.</b> And the simplicity of the old school blogs always attoned to me
+            </p>
+            <p>
+                Still, can use it <b>if needed</b>. Or if I'm paid to do so
+            </p>
+            <p>
+                This site was made with plain html.
+            </p>
+            <p>
+                Maybe I will add some simple visuals here and there, but I'm not gonna use any overbloated library or
+                framework on <b>MY</b> personal page
+            </p>
+            <h1>About me and this website</h1>
+            <p>
+                Hello. My name's Anton, I'm a 26 years old developer. Mainly, I do .NET backend for web applications,
+                but there's more to it
+            </p>
+            <ul>
+                <li>
+                    Backend applications, all the db queries, models, data retrieving
+                </li>
+                <li>
+                    I love making videogames, I used to use Unity, but now it's godot for me. Using C# as a scripting
+                    language is a joy for me. Fight me here
+                </li>
+                <li>
+                    Sometimes I do work with popular apis, made some discord\telegram bots for personal usage.
+                </li>
+                <li>
+                    Used selenium for shady activities (not really that shady)
+                </li>
+            </ul>
+            <p>I'm planning on moving away from high-level programming back to more simplier times. Go - here I go.</p>
+            <p>Kind of tired of all the modern stuff with layers of inheritance and abstraction, I want to do way more
+                explicit code</p>
+            <p>Still, I don't mind the expirience I got from creating abstractions</p>
+            <p>
+                I don't really publish my work, or commit to opensource projects, but still I think I'm a part of the
+                developer community, sometimes trying to answer stackoverflow questions, joined several discord
+            </p>
+            <h2>I'm familiar with the fun stuff</h2>
+            <p>
+                Neovim, docker, vms - <b>hell yeah</b>
+
+            </p>
+            <p>
+                Although my daily job and activities make me use windows, I'm fine with linux - use it on my vms all the
+                time.
+            </p>
+            <p> 
+                NeoVim? Use it both on my windows machine, linux vms.
+                If I can't really use it - I'm gonna use something else with vim motions. I don't really mind other
+                editors
+            </p>
+            <ul>
+                <li>
+                    I'm not a docker-compose god or anything, but I'm gonna use docker for a simple deploy of my
+                    project. Or to deploy something else to my machine
+                </li>
+                <li>
+                    VM's - this is the main way for me of interacting with other systems - and i'm fine with it. HyperV,
+                    VMWare, Qemu.
+                </li>
+                <li>
+                    NeoVim - I'm a new guy here, can't make everything perfect for me - but I'm gonna to. Still,
+                    VimMotions now is the main way to edit text, code, etc.
+                </li>
+            </ul>
+        </div>
+    </main>
+    <footer>
+        <h1>Links:</h1>
+        <ul>
+            <li>
+                <a href="https://github.com/polovgrime">Github</a>
+            </li>
+            <li>
+                <a href="https://www.linkedin.com/in/anton-polovnikov-084956219/">LinkedIn</a>
+            </li>
+        </ul>
+    </footer>
+</body>
+<style>
+    body {
+        background-color: #000;
+        color: #4e9a06;
+    }
+
+    h1 {
+        color: #3b7505
+    }
+</style>
+<script>
+    var sourceNode = document.getElementsByClassName("about")[0];
+    var targetNode = sourceNode.parentNode.appendChild(document.createElement("div"));
+    var currentIndex = 0;
+    var isAnimating = true;
+
+    sourceNode.style.display = "none";
+
+    printPage(sourceNode.children);
+
+    async function printPage(children){
+        for (let i = 0; i < children.length; i++){
+            if (isAnimating == false) {
+                return;
+            }
+            await print(children[i]);
+        }
+        removeStopButton();
+    }
+
+    async function print(target) {
+        if (isAnimating == false){
+            return;
+        }
+
+        var tempChild = targetNode.appendChild(document.createElement("div"));
+        
+        for (let i = 0; i < target.outerHTML.length; i++){
+            tempChild.innerHTML += target.outerHTML[i];
+            await sleep(1);
+        }
+
+        var newChild = targetNode.appendChild(document.createElement(target.tagName));
+        targetNode.removeChild(tempChild);
+        newChild.innerHTML = target.innerHTML;
+    }
+
+    async function sleep(time){
+        return new Promise(resolve => setTimeout(resolve, time));
+    }
+
+    function skipAnimation(){
+        isAnimating = false;
+        targetNode.style.display = "none";
+        sourceNode.style.display = "block";
+        removeStopButton();
+    }
+
+    function removeStopButton(){
+        var btn = document.getElementById("stopAnimation");
+        btn.parentElement.removeChild(btn);
+    }
+</script>
+</html>
