@@ -10,7 +10,7 @@ Dictionary<string, string> pages = new Dictionary<string, string>()
 };
 
 HttpListener server = new HttpListener();
-server.Prefixes.Add("http://127.0.0.1:1337/");
+server.Prefixes.Add("http://*:1337/");
 server.Start();
 
 Task.Run(ExecuteAsync);
