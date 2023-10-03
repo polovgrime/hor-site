@@ -10,7 +10,8 @@ Dictionary<string, string> pages = new Dictionary<string, string>()
 };
 
 HttpListener server = new HttpListener();
-server.Prefixes.Add("http://*:1337/");
+server.Prefixes.Add("http://*:80/");
+server.Prefixes.Add("http://*:443/");
 server.Start();
 
 Task.Run(ExecuteAsync);
