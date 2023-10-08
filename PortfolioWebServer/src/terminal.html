@@ -27,6 +27,11 @@
         color: #4e9a06;
     }
 
+    main {
+        position: fixed;
+        height: 100%;
+    }
+
     .username {
         color: red;
     }
@@ -42,6 +47,8 @@
     .inputField {
         color: #fff;
         padding-top: 25px;
+        width: 100%;
+        display: inline-block;
     }
 
     input[type="text"] {
@@ -57,7 +64,7 @@
 
     #terminal {
         width: calc(100% - 50px);
-        height: 400px;
+        height: calc(90% - 110px);
         overflow-y: scroll;
         -ms-overflow-style: none;
         scrollbar-width: none;
@@ -102,7 +109,6 @@
     let currentCmdIndex = 0;
 
     input.focus();
-
     input.addEventListener('keyup', function (event) {
         if (event.key === 'Enter') {
             resolveCommand(input.value);
@@ -198,7 +204,7 @@
         const myStack = 'Have experience in .NET (through 3.5 to 7). JavaScript, vue.js, node.js (not proud). Unity, but not deep. Godot (same thing, but I usually use any game engine as a platform to recreate game mechanics, not really into any real engine coding yet)';
         const aboutThisWebsite = 'This website is made with no frameworks on frontend or backend. Plain html js css on frontend and .NET on backend,' +
             'not really that pure since it\'s .NET, but still. Custom webserver. Currently I\'m working on my own http1.1 (then http2) implementation';
-        
+
         draw([aboutMe, myStack, aboutThisWebsite].join('</br>'));
     }
 
@@ -219,9 +225,11 @@
     }
 
     function composeProjects(attrs) {
-        if (attrs[1] !== undefined)
-        {
-            displaySingleProject(attrs[1]);
+        let targetProject;
+
+        if (attrs[1] !== undefined) {
+            displayProjectByTitle(attrs[1]);
+            return;
         }
 
         let composed = projects.map(project => {
@@ -234,7 +242,7 @@
 
             let description = document.createElement('span');
             let descriptionText = ': ' + project.description;
-            
+
             if (descriptionText.length > 50) {
                 descriptionText = descriptionText.substring(0, 50) + '... '
             }
@@ -254,7 +262,18 @@
             return projectDiv;
         });
 
-       composed.forEach(project => drawElement(project));
+        composed.forEach(project => drawElement(project));
+    }
+
+    function displayProjectByTitle(projectTitle) {
+        const targetProject = projects.filter(project => project.title == projectTitle);
+
+        if (targetProject[0] === undefined) {
+            draw(`Project ${projectTitle} was not found`);
+            return;
+        }
+
+        displaySingleProject(targetProject[0]);
     }
 
     function displaySingleProject(project) {
@@ -268,7 +287,7 @@
 
         let description = document.createElement('div');
         description.innerHTML = project.description;
-        
+
         projectDiv.appendChild(description);
 
         drawElement(projectDiv);
