@@ -143,6 +143,7 @@
         }
 
         var newChild = targetNode.appendChild(document.createElement(target.tagName));
+        newChild.href = target.href;
         targetNode.removeChild(tempChild);
         newChild.innerHTML = target.innerHTML;
     }
