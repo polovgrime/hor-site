@@ -3,10 +3,22 @@ using System.Net;
 using System.Text;
 
 var isExecuting = true;
-Dictionary<string, string> pages = new Dictionary<string, string>()
+Dictionary<string, byte[]> pages = new Dictionary<string, byte[]>()
 {
-    {"/", File.ReadAllText("./src/index.html") },
-    { "/terminal", File.ReadAllText("./src/terminal.html")}
+    {"/", File.ReadAllBytes("./src/index.html") },
+    { "/terminal", File.ReadAllBytes("./src/terminal.html")},
+    { "/favicon.ico", File.ReadAllBytes("./src/favicon.png") },
+    { "get_out_of_here", File.ReadAllBytes("./src/get_out.png") }
+};
+
+string[] banRoutes = new string[]
+{
+    "auth",
+    "login",
+    "wp.php",
+    "admin",
+    "wp-login.php",
+    "bitrix"
 };
 
 HttpListener server = new HttpListener();
@@ -31,7 +43,7 @@ async Task ExecuteAsync()
         var request = context.Request;
         Console.WriteLine($"Request from {request.Url}");
 
-        var buffer = Encoding.UTF8.GetBytes(ResolvePageContent(request.RawUrl));
+        var buffer = ResolvePageContent(request.RawUrl);
 
         context.Response.ContentLength64 = buffer.Length;
         using (Stream output = context.Response.OutputStream)
@@ -44,12 +56,17 @@ async Task ExecuteAsync()
     }
 }
 
-string ResolvePageContent(string url)
+byte[] ResolvePageContent(string url)
 {
-    if (pages.ContainsKey(url) == false)
+    if (pages.ContainsKey(url) == true)
     {
-        return "sorry";
+        return pages[url];
     }
 
-    return pages[url];
+    if (banRoutes.Any(bannedRoute => url.Contains(bannedRoute)))
+    {
+        return pages["get_out_of_here"];
+    }
+
+    return Encoding.UTF8.GetBytes("sorry");
 }
