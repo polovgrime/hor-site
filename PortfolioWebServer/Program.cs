@@ -5,8 +5,9 @@ using System.Text;
 var isExecuting = true;
 Dictionary<string, byte[]> pages = new Dictionary<string, byte[]>()
 {
-    {"/", File.ReadAllBytes("./src/index.html") },
-    { "/terminal", File.ReadAllBytes("./src/terminal.html")},
+   // {"/", File.ReadAllBytes("./src/index.html") },
+   // { "/terminal", File.ReadAllBytes("./src/terminal.html")},
+    { "/", File.ReadAllBytes("./src/terminal.html")}
     { "/favicon.ico", File.ReadAllBytes("./src/favicon.png") },
     { "get_out_of_here", File.ReadAllBytes("./src/get_out.png") }
 };
