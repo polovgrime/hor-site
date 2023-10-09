@@ -5,8 +5,6 @@ using System.Text;
 
 public class Program
 {
-    
-
     public static void Main(string[] args)
     {
         
@@ -18,8 +16,4 @@ public class Program
         Console.ReadLine();
         cancellationTokenSource.Cancel();
     }
-
-   
-
-    
 }
