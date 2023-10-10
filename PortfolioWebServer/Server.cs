@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PortfolioWebServer.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -15,7 +16,9 @@ namespace PortfolioWebServer
             // { "/terminal", File.ReadAllBytes("./src/terminal.html")},
             { "/", File.ReadAllBytes("./src/terminal.html")},
             { "/favicon.ico", File.ReadAllBytes("./src/favicon.png") },
-            { "get_out_of_here", File.ReadAllBytes("./src/get_out.png") }
+            { "/terminal.js/", File.ReadAllBytes("./src/terminal.js") },
+            { "get_out_of_here", File.ReadAllBytes("./src/get_out.png") },
+            { "/state.js/", File.ReadAllBytes("./src/state.js") },
         };
 
         private static readonly string[] banRoutes = new string[]
@@ -71,8 +74,6 @@ namespace PortfolioWebServer
                         await output.WriteAsync(buffer);
                         await output.FlushAsync();
                     }
-
-                    Thread.Sleep(100);
                 }
                 server.Stop();
             });
