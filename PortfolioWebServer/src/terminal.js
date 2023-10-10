@@ -194,6 +194,7 @@ function displaySingleProject(project) {
     let projectDiv = document.createElement('div');
     let title = document.createElement('a');
     title.href = project.url;
+    title.target = '_blank';
     title.innerHTML = project.title;
 
     projectDiv.appendChild(title);
