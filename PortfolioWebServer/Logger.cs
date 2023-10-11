@@ -26,7 +26,7 @@
 
         public void Error(string message) 
         {
-            var finalMessage = "Error: " + message;      
+            var finalMessage = $"Error: {message} | {DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss.ff")}";      
             Append(finalMessage);
         }
 
