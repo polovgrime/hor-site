@@ -60,19 +60,26 @@ namespace PortfolioWebServer
                 while (ct.IsCancellationRequested == false)
                 {
                     logger.Info("Listening for next request");
-                    var context = await server.GetContextAsync();
-                    var request = context.Request;
-
-                    logger.Info($"Request for {request.Url}");
-                    logger.Info($"Request from {request.RemoteEndPoint}");
-
-                    var buffer = ResolvePageContent(request.RawUrl);
-
-                    context.Response.ContentLength64 = buffer.Length;
-                    using (Stream output = context.Response.OutputStream)
+                    try
                     {
-                        await output.WriteAsync(buffer);
-                        await output.FlushAsync();
+                        var context = await server.GetContextAsync();
+                        var request = context.Request;
+
+                        logger.Info($"Request for {request.Url}");
+                        logger.Info($"Request from {request.RemoteEndPoint}");
+
+                        var buffer = ResolvePageContent(request.RawUrl);
+
+                        context.Response.ContentLength64 = buffer.Length;
+                        using (Stream output = context.Response.OutputStream)
+                        {
+                            await output.WriteAsync(buffer);
+                            await output.FlushAsync();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.Error(ex.ToString());
                     }
                 }
                 server.Stop();
