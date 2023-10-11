@@ -20,20 +20,19 @@
 
         public void Info(string message)
         {
-            var finalMessage = "Info: " + message;
-            Append(finalMessage);
+            Append("Info: " + message);
         }
 
         public void Error(string message) 
         {
-            var finalMessage = $"Error: {message} | {DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss.ff")}";      
-            Append(finalMessage);
+            Append($"Error: {message}");
         }
 
         private void Append(string message)
         {
-            Console.WriteLine(message);
-            File.AppendAllText(fileName, message + "\n");
+            var finalMessage = $"{message} | {DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss.ff")}";
+            Console.WriteLine(finalMessage);
+            File.AppendAllText(fileName, finalMessage + "\n");
         }
 
         public static Logger CreateClassInstaince(string className) 
